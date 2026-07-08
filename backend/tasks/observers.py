@@ -1,11 +1,9 @@
-
 from abc import ABC, abstractmethod
 
 
 # ── Base Observer interface ──────────────────────────────────────────────────
 
 class BaseObserver(ABC):
-
     @abstractmethod
     def update(self, event: str, user, task, detail: str = ''):
         """Called by the publisher when an event occurs."""
@@ -30,7 +28,6 @@ class ActivityLogObserver(BaseObserver):
 # ── Publisher: the thing views call ──────────────────────────────────────────
 
 class EventPublisher:
-  
     def __init__(self):
         self._observers: list[BaseObserver] = []
 

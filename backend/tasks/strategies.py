@@ -63,7 +63,6 @@ class SortByStatus(SortStrategy):
 # ── Context: the thing that uses a strategy ───────────────────────────────────
 
 class TaskSorter:
-  
     # Map URL query param values to strategy classes
     STRATEGIES = {
         'created': SortByCreatedAt,
@@ -77,7 +76,6 @@ class TaskSorter:
 
     @classmethod
     def from_param(cls, param: str):
-   
         strategy_class = cls.STRATEGIES.get(param, SortByCreatedAt)
         return cls(strategy=strategy_class())
 

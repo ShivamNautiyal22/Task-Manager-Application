@@ -11,7 +11,6 @@ class SingletonMeta(type):
 
 
 class TaskQueryManager(metaclass=SingletonMeta):
-
     def get_active_tasks(self, user):
         """Return all non-deleted tasks for a user."""
         from .models import Task

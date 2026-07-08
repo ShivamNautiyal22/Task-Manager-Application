@@ -1,6 +1,18 @@
 from .models import Task
 
+
 class TaskFactory:
+    """
+    Responsible for creating Task objects with smart defaults.
+
+    Why use a factory?
+    - All task-creation logic lives in ONE place
+    - Easy to add business rules later (e.g. "Work tasks default to high priority")
+    - Views stay clean — they just call TaskFactory.create()
+
+    Usage:
+        task = TaskFactory.create(user=request.user, data=request.data)
+    """
 
     # Default priority per category keyword (optional smart defaults)
     CATEGORY_PRIORITY_MAP = {

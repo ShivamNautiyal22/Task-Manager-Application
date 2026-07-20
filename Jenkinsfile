@@ -1,12 +1,12 @@
 pipeline {
     agent any
     environment {
-        AWS_REGION = 'us-east-1'          
-        AWS_ACCOUNT_ID = '541341196909'  
+        AWS_REGION = 'eu-west-2'
+        AWS_ACCOUNT_ID = '541341196909'
         ECR_REPO_BACKEND = 'task-manager-backend'
         ECR_REPO_FRONTEND = 'task-manager-frontend'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
-        PROD_EC2_IP = '51.24.152.119'   
+        PROD_EC2_IP = '51.24.152.119'
     }
     stages {
         stage('Checkout') {
@@ -14,12 +14,12 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Build Backend Docker Image') {
+        stage('Build Backend') {
             steps {
                 sh "docker build -t ${ECR_REPO_BACKEND}:${IMAGE_TAG} -f backend/Dockerfile ."
             }
         }
-        stage('Build Frontend Docker Image') {
+        stage('Build Frontend') {
             steps {
                 sh "docker build -t ${ECR_REPO_FRONTEND}:${IMAGE_TAG} -f frontend/Dockerfile ."
             }
@@ -46,17 +46,17 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to Production EC2') {
+        stage('Deploy to Prod') {
             steps {
                 sshagent(['ec2-ssh-key']) {
                     sh '''
-                        ssh -o StrictHostKeyChecking=no ubuntu@${PROD_EC2_IP} '
+                        ssh -o StrictHostKeyChecking=no ubuntu@${PROD_EC2_IP} "
                             aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
                             docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_BACKEND}:${IMAGE_TAG}
                             docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_FRONTEND}:${IMAGE_TAG}
                             cd /home/ubuntu/task-manager
                             IMAGE_TAG=${IMAGE_TAG} docker-compose up -d --force-recreate
-                        '
+                        "
                     '''
                 }
             }

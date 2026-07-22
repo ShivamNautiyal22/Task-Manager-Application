@@ -6,7 +6,7 @@ pipeline {
         ECR_REPO_BACKEND = 'task-manager-backend'
         ECR_REPO_FRONTEND = 'task-manager-frontend'
         IMAGE_TAG = "${env.BUILD_NUMBER}"
-        PROD_EC2_IP = '51.24.152.119'
+        PROD_EC2_IP = '18.169.244.130'
     }
     stages {
         stage('Checkout') {

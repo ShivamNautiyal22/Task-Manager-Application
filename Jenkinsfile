@@ -55,7 +55,7 @@ pipeline {
                             docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_BACKEND}:${IMAGE_TAG}
                             docker pull ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${ECR_REPO_FRONTEND}:${IMAGE_TAG}
                             cd /home/ubuntu/task-manager
-                            IMAGE_TAG=${IMAGE_TAG} docker-compose up -d --force-recreate
+                            IMAGE_TAG=${IMAGE_TAG} docker compose up -d --force-recreate
                         "
                     '''
                 }
